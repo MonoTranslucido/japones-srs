@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Japonés libre">
+  <rect width="512" height="512" rx="112" fill="#101114"/>
+  <path d="M149 143h214v46H149zM149 233h214v46H149zM149 323h214v46H149z" fill="#F2F1EB"/>
+  <path d="M234 113h45v285h-45z" fill="#F2F1EB"/>
+  <circle cx="375" cy="137" r="19" fill="#8095FF"/>
+</svg>
