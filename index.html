@@ -537,8 +537,8 @@ h2 { margin: 7px 0 0; color: var(--ink); font-size: clamp(1.25rem, 3vw, 1.65rem)
         <button class="answer-option" type="button" data-option-index="2" data-state="idle" aria-pressed="false" disabled><span class="option-key" aria-hidden="true">03</span><span class="option-text">Preparando la pregunta…</span></button>
         <button class="answer-option" type="button" data-option-index="3" data-state="idle" aria-pressed="false" disabled><span class="option-key" aria-hidden="true">04</span><span class="option-text">Preparando la pregunta…</span></button>
       </div>
-      <div id="feedback" class="feedback" data-state="idle" role="status" aria-live="polite" aria-atomic="true"><span class="feedback-icon" aria-hidden="true">✓</span><div><strong id="feedback-title">Elige una respuesta</strong><p id="feedback-detail">Marca una opción y pulsa resolver.</p></div></div>
-      <div class="practice-actions"><button id="quit-button" class="button button-ghost" type="button">TERMINAR</button><button id="skip-button" class="button button-ghost" type="button">SALTAR</button><button id="continue-button" class="button button-primary" type="button" disabled><span id="review-action-label">RESOLVER</span><span aria-hidden="true">→</span></button></div>
+      <div id="feedback" class="feedback" data-state="idle" role="status" aria-live="polite" aria-atomic="true"><span class="feedback-icon" aria-hidden="true">✓</span><div><strong id="feedback-title">Elige una respuesta</strong><p id="feedback-detail">Toca una opción para comprobarla.</p></div></div>
+      <div class="practice-actions"><button id="quit-button" class="button button-ghost" type="button">TERMINAR</button><button id="skip-button" class="button button-ghost" type="button">SALTAR</button><button id="continue-button" class="button button-primary" type="button" disabled><span id="review-action-label">CONTINUAR</span><span aria-hidden="true">→</span></button></div>
     </section>
 
     <section id="result-screen" class="screen result-screen" data-screen="result" aria-labelledby="result-title" hidden>
@@ -1082,10 +1082,9 @@ h2 { margin: 7px 0 0; color: var(--ink); font-size: clamp(1.25rem, 3vw, 1.65rem)
     var session = runtime.session;
     if (!elements.continue) return;
     var isResolved = Boolean(session && session.pending);
-    var hasSelection = Boolean(session && Number.isInteger(session.selectedIndex));
-    elements.continue.disabled = !isResolved && !hasSelection;
-    elements.continue.dataset.phase = isResolved ? 'continue' : (hasSelection ? 'resolve' : 'idle');
-    if (elements.reviewActionLabel) elements.reviewActionLabel.textContent = isResolved ? 'CONTINUAR' : 'RESOLVER';
+    elements.continue.disabled = !isResolved;
+    elements.continue.dataset.phase = isResolved ? 'continue' : 'idle';
+    if (elements.reviewActionLabel) elements.reviewActionLabel.textContent = 'CONTINUAR';
   }
 
   function hideFeedback() {
@@ -1094,18 +1093,7 @@ h2 { margin: 7px 0 0; color: var(--ink); font-size: clamp(1.25rem, 3vw, 1.65rem)
       elements.feedback.classList.remove('is-incorrect');
     }
     if (elements.feedbackTitle) elements.feedbackTitle.textContent = 'Elige una respuesta';
-    if (elements.feedbackDetail) elements.feedbackDetail.textContent = 'Marca una opción y pulsa resolver.';
-    syncReviewAction();
-    if (elements.skip) elements.skip.disabled = false;
-  }
-
-  function showSelectionFeedback() {
-    if (elements.feedback) {
-      elements.feedback.dataset.state = 'selected';
-      elements.feedback.classList.remove('is-incorrect');
-    }
-    if (elements.feedbackTitle) elements.feedbackTitle.textContent = 'Respuesta marcada';
-    if (elements.feedbackDetail) elements.feedbackDetail.textContent = 'Pulsa resolver para comprobarla.';
+    if (elements.feedbackDetail) elements.feedbackDetail.textContent = 'Toca una opción para comprobarla.';
     syncReviewAction();
     if (elements.skip) elements.skip.disabled = false;
   }
@@ -1167,8 +1155,7 @@ h2 { margin: 7px 0 0; color: var(--ink); font-size: clamp(1.25rem, 3vw, 1.65rem)
       resetOptions();
     }
     renderOptions(runtime.activeChoices, session.selectedIndex, null);
-    if (Number.isInteger(session.selectedIndex)) showSelectionFeedback();
-    else hideFeedback();
+    hideFeedback();
   }
 
   function startSession() {
@@ -1189,7 +1176,7 @@ h2 { margin: 7px 0 0; color: var(--ink); font-size: clamp(1.25rem, 3vw, 1.65rem)
     var choice = runtime.activeChoices[index];
     if (!choice) return;
     session.selectedIndex = index;
-    renderPractice();
+    resolveCurrentAnswer();
   }
 
   function resolveCurrentAnswer() {
@@ -1221,11 +1208,7 @@ h2 { margin: 7px 0 0; color: var(--ink); font-size: clamp(1.25rem, 3vw, 1.65rem)
   function handleReviewAction() {
     var session = runtime.session;
     if (!session) return;
-    if (session.pending) {
-      continuePractice();
-      return;
-    }
-    resolveCurrentAnswer();
+    if (session.pending) continuePractice();
   }
 
   function completeSession() {
