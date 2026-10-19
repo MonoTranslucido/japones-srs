@@ -162,6 +162,9 @@ h2 { margin: 7px 0 0; color: var(--ink); font-size: clamp(1.25rem, 3vw, 1.65rem)
 .install-callout p { margin: 0; }
 .install-callout strong, .install-callout b { color: var(--ink); font-weight: 700; }
 
+.app-shell[data-active-screen="practice"] { padding-bottom: max(16px, env(safe-area-inset-bottom)); }
+.app-shell[data-active-screen="practice"] .site-header,
+.app-shell[data-active-screen="practice"] .tab-bar { display: none; }
 .practice-screen { max-width: 775px; margin: 0 auto; }
 .practice-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 22px; }
 .practice-header h1 { margin: 8px 0 0; font-size: clamp(2.1rem, 7vw, 4rem); line-height: .88; }
@@ -173,15 +176,18 @@ h2 { margin: 7px 0 0; color: var(--ink); font-size: clamp(1.25rem, 3vw, 1.65rem)
 .question-stage { position: relative; display: grid; min-height: clamp(220px, 30vw, 310px); place-items: center; margin-bottom: 14px; padding: 25px; overflow: hidden; text-align: center; }
 .question-stage::after { position: absolute; top: -130px; right: -120px; width: 260px; height: 260px; border: 1px solid rgba(128, 149, 255, .24); border-radius: 50%; content: ''; }
 .question-help { position: absolute; top: 16px; left: 18px; margin: 0; color: var(--faint); font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: .11em; }
-.word-display { position: relative; z-index: 1; display: grid; justify-items: center; gap: 7px; }
-.hiragana { margin: 0; color: var(--ink); font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif; font-size: clamp(3.1rem, 12vw, 6rem); font-weight: 650; letter-spacing: .035em; line-height: 1; }
+.word-display { position: relative; z-index: 1; display: grid; max-width: 100%; justify-items: center; gap: 7px; }
+.hiragana { max-width: 100%; margin: 0; color: var(--ink); font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif; font-size: clamp(3rem, 10vw, 5rem); font-weight: 650; letter-spacing: .02em; line-height: 1.08; overflow-wrap: anywhere; text-wrap: balance; word-break: break-all; }
+.hiragana[data-length="medium"] { font-size: clamp(2.3rem, 8.5vw, 4.1rem); }
+.hiragana[data-length="long"] { font-size: clamp(1.8rem, 6.8vw, 3.25rem); }
+.hiragana[data-length="very-long"] { font-size: clamp(1.18rem, 5vw, 2.45rem); }
 .kanji:empty { display: none; }
 .kanji { margin: 0; color: var(--blue); font-family: 'Hiragino Sans', 'Noto Sans JP', sans-serif; font-size: 1rem; font-weight: 650; letter-spacing: .1em; }
 .option-list { display: grid; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
 .answer-option { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 13px; align-items: center; width: 100%; min-height: 60px; padding: 12px 16px; color: var(--ink); background: rgba(21, 22, 26, .92); border: 0; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); text-align: left; transition: background .14s ease, color .14s ease; }
 .answer-option:not(:disabled):hover { background: var(--panel-soft); }
-.answer-option:not(:disabled):active { transform: translateX(2px); }
-.answer-option:disabled { opacity: .62; }
+.answer-option:not(:disabled):active { background: var(--blue-soft); }
+.answer-option:disabled { opacity: 1; }
 .option-key { color: var(--faint); font-family: var(--mono); font-size: 10px; font-weight: 800; letter-spacing: .08em; }
 .option-text { font-size: .97rem; font-weight: 650; line-height: 1.3; }
 .answer-option[data-state="selected"] { color: var(--ink); background: var(--blue-soft); box-shadow: inset 3px 0 var(--blue); }
@@ -190,14 +196,16 @@ h2 { margin: 7px 0 0; color: var(--ink); font-size: clamp(1.25rem, 3vw, 1.65rem)
 .answer-option[data-state="correct"] .option-key { color: var(--green); }
 .answer-option[data-state="wrong"] { color: var(--coral); background: var(--coral-soft); box-shadow: inset 3px 0 var(--coral); }
 .answer-option[data-state="wrong"] .option-key { color: var(--coral); }
-.feedback { display: flex; gap: 12px; align-items: flex-start; margin-top: 14px; padding: 14px; color: var(--green); background: var(--green-soft); border: 1px solid rgba(147, 232, 168, .34); }
+.feedback { display: flex; min-height: 72px; gap: 12px; align-items: flex-start; margin-top: 14px; padding: 14px; color: var(--green); background: var(--green-soft); border: 1px solid rgba(147, 232, 168, .34); overflow: hidden; }
+.feedback[data-state="idle"], .feedback[data-state="selected"] { color: var(--muted); background: rgba(21, 22, 26, .92); border-color: var(--line); }
+.feedback[data-state="selected"] { color: var(--blue); background: var(--blue-soft); border-color: rgba(128, 149, 255, .34); }
 .feedback.is-incorrect { color: var(--coral); background: var(--coral-soft); border-color: rgba(255, 137, 123, .34); }
 .feedback-icon { display: grid; width: 22px; height: 22px; flex: 0 0 auto; place-items: center; color: var(--bg); background: currentColor; border-radius: 50%; font-size: 0; }
 .feedback-icon::after { color: var(--bg); content: '✓'; font-size: 12px; font-weight: 900; filter: invert(1); }
 .feedback strong { display: block; margin-bottom: 3px; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; }
-.feedback p { margin: 0; color: var(--ink); font-size: .85rem; line-height: 1.45; }
-.practice-actions { display: flex; justify-content: flex-end; gap: 9px; margin-top: 15px; }
-.practice-actions .button-primary { min-width: 190px; }
+.feedback p { display: -webkit-box; margin: 0; color: var(--ink); overflow: hidden; font-size: .85rem; line-height: 1.45; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.practice-actions { display: grid; grid-template-columns: minmax(0, .78fr) minmax(0, .72fr) minmax(0, 1.35fr); gap: 9px; min-height: 50px; margin-top: 15px; }
+.practice-actions .button { min-width: 0; }
 
 .result-screen { max-width: 775px; margin: 0 auto; }
 .result-hero { padding: 12px 0 30px; border-bottom: 1px solid var(--line); }
@@ -296,6 +304,108 @@ h2 { margin: 7px 0 0; color: var(--ink); font-size: clamp(1.25rem, 3vw, 1.65rem)
   .browse-row { grid-template-columns: 1fr; gap: 10px; padding: 15px; }
   .search-suffix { display: none; }
   .search-field { grid-template-columns: 37px minmax(0, 1fr); }
+}
+
+/* El repaso usa una composición propia: todo permanece a la vista y conserva
+   sus coordenadas al marcar, resolver y avanzar. */
+@media (max-width: 640px) {
+  .app-shell[data-active-screen="practice"] {
+    min-height: 100dvh;
+    padding: max(10px, env(safe-area-inset-top)) 16px max(10px, env(safe-area-inset-bottom));
+  }
+  .app-shell[data-active-screen="practice"] .practice-screen {
+    display: grid;
+    grid-template-rows: 42px 2px clamp(124px, 19dvh, 160px) 216px 64px 48px;
+    gap: 8px;
+    align-content: start;
+    height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 20px);
+    min-height: 0;
+    margin: 0;
+    overflow: hidden;
+  }
+  .app-shell[data-active-screen="practice"] .practice-header {
+    min-height: 0;
+    align-items: center;
+    gap: 14px;
+  }
+  .app-shell[data-active-screen="practice"] .practice-header h1 {
+    margin: 3px 0 0;
+    font-size: 1.45rem;
+    letter-spacing: -.055em;
+    line-height: .95;
+  }
+  .app-shell[data-active-screen="practice"] .section-label,
+  .app-shell[data-active-screen="practice"] .session-counter small { font-size: 8px; }
+  .app-shell[data-active-screen="practice"] .session-counter { min-width: 64px; gap: 3px; }
+  .app-shell[data-active-screen="practice"] .session-counter span { font-size: 12px; }
+  .app-shell[data-active-screen="practice"] .progress-track { height: 2px; margin: 0; }
+  .app-shell[data-active-screen="practice"] .question-stage {
+    min-height: 0;
+    height: 100%;
+    margin: 0;
+    padding: 15px 12px 9px;
+  }
+  .app-shell[data-active-screen="practice"] .question-stage::after {
+    top: -92px;
+    right: -90px;
+    width: 190px;
+    height: 190px;
+  }
+  .app-shell[data-active-screen="practice"] .question-help {
+    top: 10px;
+    left: 12px;
+    font-size: 8px;
+  }
+  .app-shell[data-active-screen="practice"] .word-display { gap: 3px; }
+  .app-shell[data-active-screen="practice"] .hiragana { font-size: clamp(2.15rem, 9vw, 3.8rem); }
+  .app-shell[data-active-screen="practice"] .hiragana[data-length="medium"] { font-size: clamp(1.9rem, 7.5vw, 3.05rem); }
+  .app-shell[data-active-screen="practice"] .hiragana[data-length="long"] { font-size: clamp(1.48rem, 6.25vw, 2.45rem); }
+  .app-shell[data-active-screen="practice"] .hiragana[data-length="very-long"] { font-size: clamp(1.12rem, 4.8vw, 1.95rem); }
+  .app-shell[data-active-screen="practice"] .kanji { font-size: .78rem; letter-spacing: .065em; }
+  .app-shell[data-active-screen="practice"] .option-list {
+    grid-template-rows: repeat(4, minmax(0, 1fr));
+    height: 216px;
+  }
+  .app-shell[data-active-screen="practice"] .answer-option {
+    min-height: 0;
+    height: 100%;
+    grid-template-columns: 31px minmax(0, 1fr);
+    gap: 8px;
+    padding: 6px 10px;
+  }
+  .app-shell[data-active-screen="practice"] .option-key { font-size: 9px; }
+  .app-shell[data-active-screen="practice"] .option-text {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: .82rem;
+    line-height: 1.2;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+  .app-shell[data-active-screen="practice"] .feedback {
+    min-height: 0;
+    height: 64px;
+    gap: 9px;
+    margin: 0;
+    padding: 8px 10px;
+  }
+  .app-shell[data-active-screen="practice"] .feedback-icon { width: 18px; height: 18px; }
+  .app-shell[data-active-screen="practice"] .feedback strong { margin-bottom: 2px; font-size: 9px; }
+  .app-shell[data-active-screen="practice"] .feedback p { font-size: .74rem; line-height: 1.28; }
+  .app-shell[data-active-screen="practice"] .practice-actions {
+    grid-template-columns: minmax(0, .78fr) minmax(0, .72fr) minmax(0, 1.35fr);
+    min-height: 48px;
+    margin: 0;
+  }
+  .app-shell[data-active-screen="practice"] .practice-actions .button,
+  .app-shell[data-active-screen="practice"] .practice-actions .button-primary {
+    grid-column: auto;
+    order: initial;
+    min-height: 48px;
+    min-width: 0;
+    padding: 8px 6px;
+    font-size: 8px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -427,8 +537,8 @@ h2 { margin: 7px 0 0; color: var(--ink); font-size: clamp(1.25rem, 3vw, 1.65rem)
         <button class="answer-option" type="button" data-option-index="2" data-state="idle" aria-pressed="false" disabled><span class="option-key" aria-hidden="true">03</span><span class="option-text">Preparando la pregunta…</span></button>
         <button class="answer-option" type="button" data-option-index="3" data-state="idle" aria-pressed="false" disabled><span class="option-key" aria-hidden="true">04</span><span class="option-text">Preparando la pregunta…</span></button>
       </div>
-      <div id="feedback" class="feedback" role="status" aria-live="polite" hidden><span class="feedback-icon" aria-hidden="true">✓</span><div><strong id="feedback-title">Correcto</strong><p id="feedback-detail"></p></div></div>
-      <div class="practice-actions"><button id="quit-button" class="button button-ghost" type="button">TERMINAR</button><button id="skip-button" class="button button-ghost" type="button">SALTAR</button><button id="continue-button" class="button button-primary" type="button" hidden disabled>CONTINUAR <span aria-hidden="true">→</span></button></div>
+      <div id="feedback" class="feedback" data-state="idle" role="status" aria-live="polite" aria-atomic="true"><span class="feedback-icon" aria-hidden="true">✓</span><div><strong id="feedback-title">Elige una respuesta</strong><p id="feedback-detail">Marca una opción y pulsa resolver.</p></div></div>
+      <div class="practice-actions"><button id="quit-button" class="button button-ghost" type="button">TERMINAR</button><button id="skip-button" class="button button-ghost" type="button">SALTAR</button><button id="continue-button" class="button button-primary" type="button" disabled><span id="review-action-label">RESOLVER</span><span aria-hidden="true">→</span></button></div>
     </section>
 
     <section id="result-screen" class="screen result-screen" data-screen="result" aria-labelledby="result-title" hidden>
@@ -537,6 +647,14 @@ h2 { margin: 7px 0 0; color: var(--ink); font-size: clamp(1.25rem, 3vw, 1.65rem)
     return CATEGORY_NAMES[category] || 'Vocabulario';
   }
 
+  function readingLengthTier(reading) {
+    var length = Array.from(text(reading).replace(/\s/g, '')).length;
+    if (length > 12) return 'very-long';
+    if (length > 9) return 'long';
+    if (length > 6) return 'medium';
+    return 'standard';
+  }
+
   function randomize(list) {
     var copy = list.slice();
     for (var index = copy.length - 1; index > 0; index -= 1) {
@@ -587,6 +705,7 @@ h2 { margin: 7px 0 0; color: var(--ink); font-size: clamp(1.25rem, 3vw, 1.65rem)
     elements.feedbackTitle = byId('feedback-title');
     elements.feedbackDetail = byId('feedback-detail');
     elements.continue = byId('continue-button');
+    elements.reviewActionLabel = byId('review-action-label');
     elements.skip = byId('skip-button');
     elements.practiceActions = q('.practice-actions') || q('.study-actions');
     elements.emptyPractice = byId('empty-practice-state') || byId('empty-study-state');
@@ -811,6 +930,11 @@ h2 { margin: 7px 0 0; color: var(--ink); font-size: clamp(1.25rem, 3vw, 1.65rem)
       elements.tabBrowse.classList.toggle('is-active', name === 'browse');
       elements.tabBrowse.setAttribute('aria-current', name === 'browse' ? 'page' : 'false');
     }
+    if (name === 'practice') {
+      window.requestAnimationFrame(function resetReviewScroll() {
+        window.scrollTo(0, 0);
+      });
+    }
   }
 
   function showConfig() {
@@ -852,6 +976,7 @@ h2 { margin: 7px 0 0; color: var(--ink); font-size: clamp(1.25rem, 3vw, 1.65rem)
       total: 0,
       skipped: 0,
       pending: null,
+      selectedIndex: null,
       startedAt: Date.now(),
       settings: {
         categories: categories.slice(),
@@ -902,12 +1027,11 @@ h2 { margin: 7px 0 0; color: var(--ink); font-size: clamp(1.25rem, 3vw, 1.65rem)
   }
 
   function setPracticeContentVisible(visible) {
-    [elements.practiceTopline, elements.progressTrack, elements.questionCard, elements.optionList, elements.practiceActions]
+    [elements.practiceTopline, elements.progressTrack, elements.questionCard, elements.optionList, elements.feedback, elements.practiceActions]
       .forEach(function setVisible(element) {
         if (element) element.hidden = !visible;
       });
     if (elements.emptyPractice) elements.emptyPractice.hidden = visible;
-    if (!visible && elements.feedback) elements.feedback.hidden = true;
   }
 
   function resetOptions() {
@@ -923,7 +1047,7 @@ h2 { margin: 7px 0 0; color: var(--ink); font-size: clamp(1.25rem, 3vw, 1.65rem)
     return button.querySelector('.option-text') || button.querySelector('[data-option-text]') || button;
   }
 
-  function renderOptions(choices, pending) {
+  function renderOptions(choices, selectedIndex, pending) {
     elements.options.forEach(function renderOption(button, index) {
       var choice = choices[index];
       if (!choice) {
@@ -938,7 +1062,13 @@ h2 { margin: 7px 0 0; color: var(--ink); font-size: clamp(1.25rem, 3vw, 1.65rem)
       button.setAttribute('aria-pressed', 'false');
     });
 
-    if (!pending) return;
+    if (!pending) {
+      if (Number.isInteger(selectedIndex) && elements.options[selectedIndex]) {
+        elements.options[selectedIndex].dataset.state = 'selected';
+        elements.options[selectedIndex].setAttribute('aria-pressed', 'true');
+      }
+      return;
+    }
     elements.options.forEach(function markResult(button, index) {
       var choice = choices[index];
       if (!choice) return;
@@ -948,21 +1078,41 @@ h2 { margin: 7px 0 0; color: var(--ink); font-size: clamp(1.25rem, 3vw, 1.65rem)
     });
   }
 
+  function syncReviewAction() {
+    var session = runtime.session;
+    if (!elements.continue) return;
+    var isResolved = Boolean(session && session.pending);
+    var hasSelection = Boolean(session && Number.isInteger(session.selectedIndex));
+    elements.continue.disabled = !isResolved && !hasSelection;
+    elements.continue.dataset.phase = isResolved ? 'continue' : (hasSelection ? 'resolve' : 'idle');
+    if (elements.reviewActionLabel) elements.reviewActionLabel.textContent = isResolved ? 'CONTINUAR' : 'RESOLVER';
+  }
+
   function hideFeedback() {
     if (elements.feedback) {
-      elements.feedback.hidden = true;
+      elements.feedback.dataset.state = 'idle';
       elements.feedback.classList.remove('is-incorrect');
     }
-    if (elements.continue) {
-      elements.continue.hidden = true;
-      elements.continue.disabled = true;
+    if (elements.feedbackTitle) elements.feedbackTitle.textContent = 'Elige una respuesta';
+    if (elements.feedbackDetail) elements.feedbackDetail.textContent = 'Marca una opción y pulsa resolver.';
+    syncReviewAction();
+    if (elements.skip) elements.skip.disabled = false;
+  }
+
+  function showSelectionFeedback() {
+    if (elements.feedback) {
+      elements.feedback.dataset.state = 'selected';
+      elements.feedback.classList.remove('is-incorrect');
     }
+    if (elements.feedbackTitle) elements.feedbackTitle.textContent = 'Respuesta marcada';
+    if (elements.feedbackDetail) elements.feedbackDetail.textContent = 'Pulsa resolver para comprobarla.';
+    syncReviewAction();
     if (elements.skip) elements.skip.disabled = false;
   }
 
   function showFeedback(card, pending) {
     if (elements.feedback) {
-      elements.feedback.hidden = false;
+      elements.feedback.dataset.state = pending.wasCorrect ? 'correct' : 'incorrect';
       elements.feedback.classList.toggle('is-incorrect', !pending.wasCorrect);
     }
     if (elements.feedbackTitle) elements.feedbackTitle.textContent = pending.wasCorrect ? 'Correcto' : 'Casi';
@@ -971,10 +1121,7 @@ h2 { margin: 7px 0 0; color: var(--ink); font-size: clamp(1.25rem, 3vw, 1.65rem)
         ? card.definition
         : 'Respuesta: ' + card.spanish + '. ' + card.definition;
     }
-    if (elements.continue) {
-      elements.continue.hidden = false;
-      elements.continue.disabled = false;
-    }
+    syncReviewAction();
     if (elements.skip) elements.skip.disabled = true;
   }
 
@@ -988,7 +1135,10 @@ h2 { margin: 7px 0 0; color: var(--ink); font-size: clamp(1.25rem, 3vw, 1.65rem)
 
     setPracticeContentVisible(true);
     if (elements.category) elements.category.textContent = readableCategory(card.category).toUpperCase();
-    if (elements.hiragana) elements.hiragana.textContent = card.hiragana;
+    if (elements.hiragana) {
+      elements.hiragana.textContent = card.hiragana;
+      elements.hiragana.dataset.length = readingLengthTier(card.hiragana);
+    }
     if (elements.kanji) {
       elements.kanji.textContent = controlIsOn(elements.showKanji) && canonical(card.form) !== canonical(card.hiragana)
         ? card.form
@@ -1007,15 +1157,18 @@ h2 { margin: 7px 0 0; color: var(--ink); font-size: clamp(1.25rem, 3vw, 1.65rem)
 
     if (session.pending) {
       runtime.activeChoices = session.pending.choices;
-      renderOptions(runtime.activeChoices, session.pending);
+      renderOptions(runtime.activeChoices, session.selectedIndex, session.pending);
       showFeedback(card, session.pending);
       return;
     }
 
-    runtime.activeChoices = makeChoices(card);
-    resetOptions();
-    renderOptions(runtime.activeChoices, null);
-    hideFeedback();
+    if (!runtime.activeChoices) {
+      runtime.activeChoices = makeChoices(card);
+      resetOptions();
+    }
+    renderOptions(runtime.activeChoices, session.selectedIndex, null);
+    if (Number.isInteger(session.selectedIndex)) showSelectionFeedback();
+    else hideFeedback();
   }
 
   function startSession() {
@@ -1029,10 +1182,21 @@ h2 { margin: 7px 0 0; color: var(--ink); font-size: clamp(1.25rem, 3vw, 1.65rem)
     renderPractice();
   }
 
-  function answerCurrentCard(index) {
+  function selectCurrentAnswer(index) {
     var session = runtime.session;
     var card = currentCard();
     if (!session || !card || session.pending || !runtime.activeChoices) return;
+    var choice = runtime.activeChoices[index];
+    if (!choice) return;
+    session.selectedIndex = index;
+    renderPractice();
+  }
+
+  function resolveCurrentAnswer() {
+    var session = runtime.session;
+    var card = currentCard();
+    if (!session || !card || session.pending || !runtime.activeChoices || !Number.isInteger(session.selectedIndex)) return;
+    var index = session.selectedIndex;
     var choice = runtime.activeChoices[index];
     if (!choice) return;
     var wasCorrect = Boolean(choice.correct);
@@ -1054,6 +1218,16 @@ h2 { margin: 7px 0 0; color: var(--ink); font-size: clamp(1.25rem, 3vw, 1.65rem)
     renderPractice();
   }
 
+  function handleReviewAction() {
+    var session = runtime.session;
+    if (!session) return;
+    if (session.pending) {
+      continuePractice();
+      return;
+    }
+    resolveCurrentAnswer();
+  }
+
   function completeSession() {
     if (!runtime.session) {
       showConfig();
@@ -1069,6 +1243,7 @@ h2 { margin: 7px 0 0; color: var(--ink); font-size: clamp(1.25rem, 3vw, 1.65rem)
     session.cards = session.settings.randomOrder ? randomize(session.mistakes) : session.mistakes.slice();
     session.cursor = 0;
     session.pending = null;
+    session.selectedIndex = null;
     session.inMistakeRound = true;
     session.mistakeRoundComplete = true;
     runtime.activeChoices = null;
@@ -1081,6 +1256,7 @@ h2 { margin: 7px 0 0; color: var(--ink); font-size: clamp(1.25rem, 3vw, 1.65rem)
     if (!session || !session.pending) return;
     session.cursor += 1;
     session.pending = null;
+    session.selectedIndex = null;
     runtime.activeChoices = null;
     if (session.cursor >= session.cards.length) {
       if (startMistakeRoundIfNeeded(session)) return;
@@ -1098,6 +1274,7 @@ h2 { margin: 7px 0 0; color: var(--ink); font-size: clamp(1.25rem, 3vw, 1.65rem)
     var breakdown = session.byCategory[card.category];
     if (breakdown) breakdown.skipped += 1;
     session.cursor += 1;
+    session.selectedIndex = null;
     runtime.activeChoices = null;
     if (session.cursor >= session.cards.length) {
       if (startMistakeRoundIfNeeded(session)) return;
@@ -1258,7 +1435,7 @@ h2 { margin: 7px 0 0; color: var(--ink); font-size: clamp(1.25rem, 3vw, 1.65rem)
 
   function handleAction(action, target) {
     if (action === 'start-practice' || action === 'start-review') startSession();
-    if (action === 'continue') continuePractice();
+    if (action === 'continue') handleReviewAction();
     if (action === 'skip-card') skipCurrentCard();
     if (action === 'finish-session' || action === 'quit-session') finishSession();
     if (action === 'restart-practice' || action === 'review-again') startSession();
@@ -1274,7 +1451,7 @@ h2 { margin: 7px 0 0; color: var(--ink); font-size: clamp(1.25rem, 3vw, 1.65rem)
       if (!event.target || typeof event.target.closest !== 'function') return;
       var option = event.target.closest('#option-list .answer-option, #option-list [data-option-index], #option-list button');
       if (option && !option.disabled && runtime.session && !runtime.session.pending) {
-        answerCurrentCard(Number(option.dataset.optionIndex));
+        selectCurrentAnswer(Number(option.dataset.optionIndex));
         return;
       }
       var trigger = event.target.closest('[data-action]');
@@ -1320,7 +1497,7 @@ h2 { margin: 7px 0 0; color: var(--ink); font-size: clamp(1.25rem, 3vw, 1.65rem)
     }
 
     bindActionWithoutData(elements.start, startSession);
-    bindActionWithoutData(elements.continue, continuePractice);
+    bindActionWithoutData(elements.continue, handleReviewAction);
     bindActionWithoutData(elements.skip, skipCurrentCard);
     bindActionWithoutData(elements.restart, startSession);
     bindActionWithoutData(elements.quit, finishSession);
