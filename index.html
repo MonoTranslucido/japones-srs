@@ -36,7 +36,7 @@
   --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
   --safe-area-top: env(safe-area-inset-top, 0px);
   --safe-area-bottom: env(safe-area-inset-bottom, 0px);
-  --ios-glass-clearance: 20px;
+  --ios-glass-clearance: 28px;
   --app-top-clearance: var(--safe-area-top);
   font-family: var(--sans);
 }
@@ -44,7 +44,7 @@
 /* En móvil y como app instalada, el contenido empieza después de la zona
    translúcida del sistema en lugar de quedar debajo del Liquid Glass. */
 @media (max-width: 640px), (display-mode: standalone) {
-  :root { --app-top-clearance: max(48px, calc(var(--safe-area-top) + var(--ios-glass-clearance))); }
+  :root { --app-top-clearance: max(56px, calc(var(--safe-area-top) + var(--ios-glass-clearance))); }
 }
 
 * { box-sizing: border-box; }
